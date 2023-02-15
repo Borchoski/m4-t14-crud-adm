@@ -3,4 +3,10 @@ import {
     verifyEmailExists,
 } from "../middlewares/users.middleware";
 
-export { verifyRequiredKeysNewUser, verifyEmailExists };
+import ensureDataIsValidMiddleware from "./esnsureDataisValid.middlewares";
+
+export {
+    verifyRequiredKeysNewUser,
+    verifyEmailExists,
+    ensureDataIsValidMiddleware,
+};

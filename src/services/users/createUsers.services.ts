@@ -3,15 +3,10 @@ import format from "pg-format";
 import { iUserRequest, iUserResult } from "../../interfaces/users.interface";
 import { AppError } from "../../error";
 import { QueryConfig } from "pg";
+import { hash } from "bcryptjs";
 
 const createUser = async (userData: iUserRequest) => {
-    const validKeys: Array<string> = [
-        "active",
-        "admin",
-        "email",
-        "name",
-        "password",
-    ];
+    const validKeys: Array<string> = ["admin", "email", "name", "password"];
     const keys: Array<string> = Object.keys(userData);
 
     const allValid: boolean = keys.every((key: string) => {
@@ -36,6 +31,13 @@ const createUser = async (userData: iUserRequest) => {
         throw new AppError("E-mail already exists", 409);
     }
 
+    const hashedPassword = await hash(userData.password, 10);
+
+    const newUser: iUserRequest = {
+        ...userData,
+        password: hashedPassword,
+    };
+
     const queryString: string = format(
         `
     INSERT INTO 
@@ -44,8 +46,8 @@ const createUser = async (userData: iUserRequest) => {
         (%L)
     RETURNING id, name, email, admin, active;
     `,
-        Object.keys(userData),
-        Object.values(userData)
+        Object.keys(newUser),
+        Object.values(newUser)
     );
     const QueryResult: iUserResult = await client.query(queryString);
 
