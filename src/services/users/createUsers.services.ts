@@ -6,16 +6,6 @@ import { QueryConfig } from "pg";
 import { hash } from "bcryptjs";
 
 const createUser = async (userData: iUserRequest) => {
-    const validKeys: Array<string> = ["admin", "email", "name", "password"];
-    const keys: Array<string> = Object.keys(userData);
-
-    const allValid: boolean = keys.every((key: string) => {
-        return validKeys.includes(key);
-    });
-    if (!allValid) {
-        throw new AppError(`Valid keys are: ${validKeys}`, 400);
-    }
-
     const queryStringVerifyEmail: string = `
     SELECT * FROM 
         users u 

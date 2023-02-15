@@ -1,6 +1,6 @@
 import { sign } from "jsonwebtoken";
 import { compare } from "bcryptjs";
-import { iUserLoginRequest, iToken } from "../../interfaces/users.interface";
+import { iUserLoginRequest } from "../../interfaces/users.interface";
 import { QueryConfig } from "pg";
 import client from "../../database/config";
 import { AppError } from "../../error";

@@ -1,11 +1,5 @@
 import { Request, Response } from "express";
-import {
-    createUser,
-    getUsers,
-    softDeleteUser,
-    createLoginService,
-    getUnicUser,
-} from "../services";
+import { createUser, getUsers, softDeleteUser, getUnicUser } from "../services";
 import { iUserRequest } from "../interfaces/users.interface";
 
 const createUserController = async (
