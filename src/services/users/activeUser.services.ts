@@ -1,19 +1,18 @@
 import { QueryConfig } from "pg";
-import client from "../../database/config";
+import { client } from "../../database";
 import { AppError } from "../../error";
+import { iUserResult } from "../../interfaces/users.interface";
 
-const softDeleteUser = async (userId: number, authToken: string) => {
+const activeUserPut = async (authToken: string, id: number) => {
     if (!authToken || authToken == "Bearer undefined") {
         throw new AppError("Missing authorization token", 401);
     }
-
-    const id: number = userId;
 
     const queryStringVerifyId: string = `
     SELECT * FROM 
         users u 
     WHERE 
-        id = $1
+        id = $1;
     `;
     const queryConfigVerifyId: QueryConfig = {
         text: queryStringVerifyId,
@@ -24,21 +23,22 @@ const softDeleteUser = async (userId: number, authToken: string) => {
         throw new AppError("Id not Found", 400);
     }
 
-    const queryString: string = `
-        UPDATE 
-            users
-        SET
-            "active" = false
-        WHERE 
-            id = $1
+    const queyString: string = `   
+    UPDATE 
+        users 
+    SET 
+        active = TRUE 
+    WHERE 
+        id = $1
+    RETURNING id, name, email, admin, active;
     `;
-
     const queryConfig: QueryConfig = {
-        text: queryString,
+        text: queyString,
         values: [id],
     };
+    const queryResult: iUserResult = await client.query(queryConfig);
 
-    await client.query(queryConfig);
+    return queryResult.rows[0];
 };
 
-export { softDeleteUser };
+export { activeUserPut };

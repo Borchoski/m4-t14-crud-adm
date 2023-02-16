@@ -30,7 +30,7 @@ const createLoginService = async (
         throw new AppError("Invalid email or password!", 401);
     }
     const token: string = sign(
-        { email: user.email },
+        { email: user.email, admin: user.admin },
         String(process.env.SECRET_KEY),
         { expiresIn: "24h", subject: String(user.id) }
     );
