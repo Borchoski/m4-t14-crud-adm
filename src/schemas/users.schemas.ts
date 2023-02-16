@@ -17,9 +17,15 @@ const returnUserSchemaWithoutPassword = returnUserSchema.omit({
 
 const allUsersSchema = z.array(returnUserSchemaWithoutPassword);
 
+const loginUserSchema = z.object({
+    email: z.string().email(),
+    password: z.string(),
+});
+
 export {
     createUserSchema,
     returnUserSchema,
     returnUserSchemaWithoutPassword,
     allUsersSchema,
+    loginUserSchema,
 };

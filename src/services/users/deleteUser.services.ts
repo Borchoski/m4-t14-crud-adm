@@ -4,7 +4,7 @@ import client from "../../database/config";
 import { AppError } from "../../error";
 
 const softDeleteUser = async (userId: number, authToken: string) => {
-    if (!authToken) {
+    if (!authToken || authToken.length <= 6) {
         throw new AppError("Missing authorization token", 401);
     }
 
@@ -21,8 +21,8 @@ const softDeleteUser = async (userId: number, authToken: string) => {
         values: [id],
     };
     const QueryResultVerifyId = await client.query(queryConfigVerifyId);
-    if (QueryResultVerifyId.rowCount < 1) {
-        throw new AppError("E-mail already exists", 409);
+    if (QueryResultVerifyId.rowCount === 0) {
+        throw new AppError("Id not Found", 400);
     }
 
     const queryString: string = `

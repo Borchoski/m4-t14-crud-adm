@@ -2,7 +2,7 @@ import client from "../../database/config";
 import { AppError } from "../../error";
 
 const getUsers = async (authToken: string) => {
-    if (!authToken) {
+    if (authToken.length <= 6) {
         throw new AppError("Missing authorization token", 401);
     }
 

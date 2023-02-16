@@ -4,6 +4,7 @@ import {
     deleteUser,
     getAllUsers,
     getUser,
+    updateUserController,
 } from "../controllers/users.controllers";
 
 import { createUserSchema } from "../schemas/users.schemas";
@@ -20,5 +21,6 @@ usersRouter.post(
 usersRouter.get("", getAllUsers);
 usersRouter.get("/profile", getUser);
 usersRouter.delete("/:id", deleteUser);
+usersRouter.patch("/:id", updateUserController);
 
 export { usersRouter };

@@ -4,7 +4,7 @@ import { client } from "../../database";
 import { AppError } from "../../error";
 
 const getUnicUser = async (authToken: string) => {
-    if (!authToken) {
+    if (authToken.length <= 6) {
         throw new AppError("Missing authorization token", 401);
     }
     const token: string = authToken.split(" ")[1];
